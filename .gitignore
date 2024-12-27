@@ -1,5 +1,6 @@
 .idea
 cmake-build-debug
 main
+main.cpp
 main.dSYM
 .DS_Store
