@@ -2,5 +2,6 @@
 cmake-build-debug
 main
 main.cpp
+codeforces/Meeting on the Line.cpp
 main.dSYM
 .DS_Store
