@@ -1,46 +1,64 @@
-// Cole Smith (colesmith54)
 #include <bits/stdc++.h>
 
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> ii;
 
 void solve() {
-    int n, a, b, c;
-    cin >> n >> a >> b >> c;
+    int n;
+    cin >> n;
 
-    int total = a + b + c;
-    int ans = 0;
+    vector<vector<int>> g(n + 1);
+    vector<double> prob(n + 1, 0);
+    prob[1] = 1;
 
-    if (n >= total) {
-        int cycles = n / total;
-        n -= cycles * total;
-        ans += (3 * cycles);
+    for (int i = 0; i < n - 1; ++i) {
+        int u, v;
+        cin >> u >> v;
+        g[u].push_back(v);
+        g[v].push_back(u);
     }
 
-    if (n > 0) {
-        n -= a;
-        ans++;
+    vector<bool> vis(n + 1, false);
+    vis[1] = true;
+
+    queue<int> q;
+    q.push(1);
+
+    double ans;
+    int lvl = 0;
+
+    while (!q.empty()) {
+        int sz = q.size();
+        while (sz--) {
+            int u = q.front();
+            q.pop();
+            vector<int> children;
+
+            for (int v: g[u]) {
+                if (!vis[v]) {
+                    children.push_back(v);
+                    q.push(v);
+                    vis[v] = true;
+                }
+            }
+
+            if (children.empty()) {
+                ans += prob[u] * lvl;
+            } else {
+                double np = prob[u] / children.size();
+                for (int v: children) {
+                    prob[v] = np;
+                }
+            }
+        }
+        lvl++;
     }
 
-    if (n > 0) {
-        n -= b;
-        ans++;
-    }
-
-    if (n > 0) {
-        n -= c;
-        ans++;
-    }
-
-    cout << ans << '\n';
+    cout << std::fixed << std::setprecision(15) << ans;
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int t;
-    cin >> t;
-    while (t--) solve();
+    solve();
 }
