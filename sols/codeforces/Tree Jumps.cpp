@@ -50,7 +50,8 @@ void solve() {
     for (int i = 2; i < l; ++i) {
         ll sum = 0;
         for (int v : lvls[i]) {
-            dp[v] = (dp_lvl[i - 1] - dp[p[v]] + m) % m;
+
+
             sum = (sum + dp[v]) % m;
         }
         dp_lvl[i] = sum;

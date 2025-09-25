@@ -4,30 +4,64 @@
 using namespace std;
 
 class DSU {
-private:
-    vector<int> p, rank, set_size;
-    int num_sets;
+    vector<int> parent;
+    vector<int> rank;
 public:
     DSU(int n) {
-        p.assign(n, 0);
-        for (int i = 0; i < n; ++i) p[i] = i;
-        rank.assign(n, 0);
-        set_size.assign(n, 1);
-        num_sets = n;
+        parent.assign(n, 0);
+        rank.assign(n, 1);
+
+        // set every node to be its own parent
+        for (int i = 0; i < n; ++i)
+            parent[i] = i;
     }
 
-    int findSet(int i) { return (p[i] == i) ? i : (p[i] = findSet(p[i])); }
-    bool isSameSet(int i, int j) { return findSet(i) == findSet(j); }
-    int numDisjointSets() const { return num_sets; }
-    int sizeOfSet(int i) { return set_size[findSet(i)]; }
+    int find_set(int v) {
+        // if v is a representative...
+        if (parent[v] == v)
+            return v;
 
-    void unionSet(int i, int j) {
-        if (isSameSet(i, j)) return;
-        int x = findSet(i), y = findSet(j);
-        if (rank[x] > rank[y]) swap(x, y);
-        else if (rank[x] == rank[y]) ++rank[y];
-        p[x] = y;
-        set_size[y] += set_size[x];
-        --num_sets;
+        // path compression
+        parent[v] = find_set(parent[v]);
+
+        return parent[v];
+    }
+
+    void union_set(int a, int b) {
+        int rep_a = find_set(a);
+        int rep_b = find_set(b);
+
+        // don't merge if both nodes are in the same set
+        if (rep_a == rep_b)
+            return;
+
+        // ensure that rep_a is the larger tree
+        if (rank[rep_b] > rank[rep_a])
+            swap(rep_a, rep_b);
+
+        // if both trees have equal depths, the new tree will have +1 depth
+        if (rank[rep_a] == rank[rep_b])
+            ++rank[rep_a];
+
+        parent[rep_b] = rep_a;
     }
 };
+
+struct Edge {
+    int u, v, weight;
+    bool operator<(Edge const& other) {
+        return weight < other.weight;
+    }
+};
+
+vector<Edge> MST;
+
+sort(edges.begin(), edges.end());
+
+for (Edge e : edges) {
+if (find_set(e.u) != find_set(e.v)) {
+cost += e.weight;
+result.push_back(e);
+union_sets(e.u, e.v);
+}
+}
