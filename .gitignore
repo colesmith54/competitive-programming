@@ -1,8 +1,6 @@
 .idea
 cmake-build-debug
 main
-Maximum Neighborhood.cpp
-Stone Game.cpp
 main.dSYM
-Operations with Inversions.cpp
 .DS_Store
+main.cpp
