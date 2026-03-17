@@ -3,4 +3,3 @@ cmake-build-debug
 main
 main.dSYM
 .DS_Store
-Spring.cpp
