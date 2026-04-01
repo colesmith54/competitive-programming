@@ -1,4 +1,3 @@
-// Cole Smith (colesmith54)
 #include <bits/stdc++.h>
 using namespace std;
 
